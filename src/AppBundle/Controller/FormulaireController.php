@@ -42,4 +42,11 @@ class FormulaireController extends Controller
         ));
 
     }
+
+    /**
+     * @param Request $request
+     */
+    public function showContainerAction(Request $request)
+    {
+    }
 }

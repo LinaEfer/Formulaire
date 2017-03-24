@@ -2,7 +2,7 @@
 
     {% block body %}
         <div class="container">
-            <h1 class="center">Create a new formulaire</h1>
+            <h1 class="center" id="title">Create a new formulaire</h1>
             {{ form_start(form) }}
                 <div class="panel">
                     {{ form_row(form.sexe, {'label': ' '}) }}
@@ -13,12 +13,26 @@
                     {{ form_row(form.pays) }}
                     {{ form_row(form.zipcode) }}
                     {{ form_row(form.autreResidence) }}
-                    {% block form_row %}
-                        {{ form_row(form.offre, {'label': 'Accepter de recevoir nos offres.'}) }}
-                    {% endblock form_row %}
 
+                        <div id="hideMe">
+                            {{ form_row(form.autrePays) }}
+                            {{ form_row(form.idNumberFiscale) }}
+                        </div>
+
+                    {{ form_row(form.offre, {'label': 'Accepter de recevoir nos offres.'}) }}
                     {{ form_row(form.save, {'label': 'Valider'}) }}
                 </div>
             {{ form_end(form) }}
+
+
+            <div>
+                <input type="checkbox" data-toggle="toggle" data-on="On" data-off="Off"> </input>
+            </div>
+
         </div>
+    {% endblock %}
+
+    {% block javascripts %}
+        {{ parent() }}
+            <script src="{{ asset('js/main.js') }}"></script>
     {% endblock %}

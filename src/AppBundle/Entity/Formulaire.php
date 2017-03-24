@@ -84,7 +84,7 @@ class Formulaire
      * @var string
      *
      * @ORM\Column(type="string", nullable=false)
-     * @Assert\NotBlank
+     * @Assert\NotBlank()
      * @Assert\Length(max = 5)
      */
     private $zipcode;
@@ -93,6 +93,20 @@ class Formulaire
      * @ORM\Column(type="boolean")
      */
     private $autreResidence;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $autrePays;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", nullable=false)
+     */
+    private $idNumberFiscale;
 
     /**
      * @return int
@@ -253,6 +267,39 @@ class Formulaire
     {
         $this->autreResidence = $autreResidence;
     }
+
+    /**
+     * @return string
+     */
+    public function getAutrePays()
+    {
+        return $this->autrePays;
+    }
+
+    /**
+     * @param string $autrePays
+     */
+    public function setAutrePays($autrePays)
+    {
+        $this->autrePays = $autrePays;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdNumberFiscale()
+    {
+        return $this->idNumberFiscale;
+    }
+
+    /**
+     * @param string $idNumberFiscale
+     */
+    public function setIdNumberFiscale($idNumberFiscale)
+    {
+        $this->idNumberFiscale = $idNumberFiscale;
+    }
+
 
 
 }
