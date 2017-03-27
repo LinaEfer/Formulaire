@@ -33,6 +33,7 @@ class FormulaireForm extends AbstractType
         ->add('email', EmailType::class)
         ->add('pays', CountryType::class)
         ->add('zipcode', TextType::class)
+        //->add('autreResidence', CheckboxType::class)
         ->add('autreResidence', ChoiceType::class, array(
             'choices' => array(
                 'No' => false,
@@ -40,8 +41,8 @@ class FormulaireForm extends AbstractType
             ),
             'choices_as_values' => true,
         ))
-            ->add('autrePays', CountryType::class)
-            ->add('idNumberFiscale', NumberType::class)
+        ->add('autrePays', CountryType::class)
+        ->add('idNumberFiscale', NumberType::class)
         ->add('offre', CheckboxType::class)
         ->add('save', SubmitType::class, array('label' => 'Submit'))
         ->getForm();

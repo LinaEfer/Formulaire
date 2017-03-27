@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+    {% block body %}
+        <div class="container">
+            <h1 class="center" id="title">Preview</h1>
+            <div class="panel">
+                <table class="table-bordered">
+                    <tbody>
+                    {% for f in formulaire %}
+                        <br>
+                            {% if f.sexe == true %}
+
+                                <tt>Nom: M. {{ f.prenom}} {{ f.nom }}</tt><br />
+                            {% else %}
+
+                                <tt>Nom: Mme. {{ f.prenom}} {{ f.nom }}</tt><br />
+                            {% endif %}
+                            <tt>Email: {{ f.email }}</tt><br />
+                            <tt>Date de naissance: </tt><br /> {# toString #}
+                            <tt>Pays: {{ f.pays }}</tt><br /> {# just countrie's abreviatur #}
+                            <tt>ZipCode: {{ f.zipcode }} </tt><br />
+                            {% if f.autreResidence == true %}
+
+                                 <tt>Autre residence: Oui</tt>
+                            {% else %}
+
+                                <tt>Autre residence: No</tt>
+                            {% endif %} <br />
+                            <tt>Autre pays: {{ f.autrePays }}</tt><br />
+                            <tt>Numéro d'identification: {{ f.IdNumberFiscale }}</tt>
+
+                            <tt><a class="btn pull-right btn-primary btn-sm" href="{{ path ('pdf') }}">Print PDF</a></tt><br />
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    {% endblock %}
+
