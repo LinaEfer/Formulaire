@@ -1,110 +1,102 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: vasilina
- * Date: 23/03/2017
- * Time: 10:31
- */
 
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-
 /**
- * Class Formulaire
- * @package AppBundle\Entity
  * @ORM\Entity
  */
-
 class Formulaire
 {
-
     /**
-     * @var int The entity Id
+     * @var string
      *
-     * @ORM\Id()
+     * @ORM\Id
      * @ORM\GeneratedValue(strategy="UUID")
      * @ORM\Column(type="guid")
      */
     private $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(type="string", nullable=false)
-     * @Assert\NotBlank()
+     * @ORM\Column(name="gender", length=6)
+     * @Assert\Choice(callback = "getGenderKeys")
      */
-    private $nom;
+    private $gender;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string", nullable=false)
-     * @Assert\NotBlank()
+     * @ORM\Column(name="firstname", nullable=false)
+     * @Assert\NotBlank
+     * @Assert\Length(max="250")
      */
-    private $prenom;
+    private $firstname;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string", nullable=false)
-     * @Assert\NotBlank()
+     * @ORM\Column(name="lastname", nullable=false)
+     * @Assert\NotBlank
+     * @Assert\Length(max="250")
+     */
+    private $lastname;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="email", nullable=false)
+     * @Assert\Email(
+     *     message = "The email '{{ value }}' is not a valid email.",
+     *     checkMX = true
+     * )
      */
     private $email;
 
     /**
      * @var \DateTimeInterface
-     *
-     * @ORM\Column(type="datetime", nullable=false)
+     * @ORM\Column(type="datetime", name="datebirth", nullable=false)
      */
-    private  $datebirth;
+    private $datebirth;
 
     /**
-     *
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(name="offer", type="boolean")
      */
-    private $offre;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $sexe;
-
+    private $offer;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string", nullable=false)
+     * @ORM\Column(name="country")
      */
-    private $pays;
+    private $country;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string", nullable=false)
-     * @Assert\NotBlank()
+     * @ORM\Column(name="zipcode", nullable=false)
+     * @Assert\NotBlank
      * @Assert\Length(max = 5)
      */
     private $zipcode;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(name="other_residence", type="boolean")
      */
-    private $autreResidence;
+    private $otherResidence;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(name="other_country")
      */
-    private $autrePays;
+    private $otherCountry;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(name="id_number_fiscale")
      */
     private $idNumberFiscale;
 
@@ -117,59 +109,70 @@ class Formulaire
     }
 
     /**
-     * @param int $id
+     * @return string
      */
-    public function setId($id)
+    public function getGender()
     {
-        $this->id = $id;
+        return $this->gender;
     }
 
     /**
-     * @return mixed
+     * @param string $gender
      */
-    public function getSexe()
+    public function setGender($gender)
     {
-        return $this->sexe;
+        $this->gender = $gender;
+
+        return $this;
     }
 
-    /**
-     * @param mixed $sexe
-     */
-    public function setSexe($sexe)
+    private static $genderValues = [
+        'M.' => 'male',
+        'Mme.' => 'female',
+    ];
+
+    public static function getGenderValues()
     {
-        $this->sexe = $sexe;
+        return static::$genderValues;
+    }
+
+    public static function getGenderKeys()
+    {
+        return array_values(static::$genderValues);
     }
 
     /**
      * @return string
      */
-    public function getNom()
+    public function getFirstname()
     {
-        return $this->nom;
+        return $this->firstname;
     }
 
     /**
-     * @param string $nom
+     * @param string $firstname
      */
-    public function setNom($nom)
+    public function setFirstname($firstname)
     {
-        $this->nom = $nom;
+        $this->firstname = $firstname;
     }
 
     /**
      * @return string
      */
-    public function getPrenom()
+    public function getLastname()
     {
-        return $this->prenom;
+        return $this->lastname;
     }
 
     /**
-     * @param string $prenom
+     * @param string $lastname
      */
-    public function setPrenom($prenom)
+    public function setLastname($lastname)
     {
-        $this->prenom = $prenom;
+        $this->lastname = $lastname;
+
+        return $this;
     }
 
     /**
@@ -186,6 +189,8 @@ class Formulaire
     public function setEmail($email)
     {
         $this->email = $email;
+
+        return $this;
     }
 
     /**
@@ -202,38 +207,44 @@ class Formulaire
     public function setDatebirth($datebirth)
     {
         $this->datebirth = $datebirth;
-    }
 
-    /**
-     * @return mixed
-     */
-    public function getOffre()
-    {
-        return $this->offre;
-    }
-
-    /**
-     * @param mixed $offre
-     */
-    public function setOffre($offre)
-    {
-        $this->offre = $offre;
+        return $this;
     }
 
     /**
      * @return string
      */
-    public function getPays()
+    public function getOffer()
     {
-        return $this->pays;
+        return $this->offer;
     }
 
     /**
-     * @param string $pays
+     * @param string $offer
      */
-    public function setPays($pays)
+    public function setOffer($offer)
     {
-        $this->pays = $pays;
+        $this->offer = $offer;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCountry()
+    {
+        return $this->country;
+    }
+
+    /**
+     * @param string $country
+     */
+    public function setCountry($country)
+    {
+        $this->country = $country;
+
+        return $this;
     }
 
     /**
@@ -250,38 +261,59 @@ class Formulaire
     public function setZipcode($zipcode)
     {
         $this->zipcode = $zipcode;
-    }
 
-    /**
-     * @return mixed
-     */
-    public function getAutreResidence()
-    {
-        return $this->autreResidence;
-    }
-
-    /**
-     * @param mixed $autreResidence
-     */
-    public function setAutreResidence($autreResidence)
-    {
-        $this->autreResidence = $autreResidence;
+        return $this;
     }
 
     /**
      * @return string
      */
-    public function getAutrePays()
+    public function getOtherResidence()
     {
-        return $this->autrePays;
+        return $this->otherResidence;
     }
 
     /**
-     * @param string $autrePays
+     * @param string $otherResidence
      */
-    public function setAutrePays($autrePays)
+    public function setOtherResidence($otherResidence)
     {
-        $this->autrePays = $autrePays;
+        $this->otherResidence = $otherResidence;
+
+        return $this;
+    }
+
+    private static $otherResidenceValues = [
+        'No' => false,
+        'Yes' => true,
+    ];
+
+    public static function getOtherResidenceValues()
+    {
+        return static::$otherResidenceValues;
+    }
+
+    public static function getOtherResidenceKeys()
+    {
+        return array_values(static::$otherResidenceValues);
+    }
+
+    /**
+     * @return string
+     */
+    public function getOtherCountry()
+    {
+        return $this->otherCountry;
+    }
+
+    /**
+     * @param string $otherCountry
+     */
+    public function setOtherCountry($otherCountry)
+    {
+        $this->otherCountry = $otherCountry;
+
+        return $this;
     }
 
     /**
@@ -298,8 +330,7 @@ class Formulaire
     public function setIdNumberFiscale($idNumberFiscale)
     {
         $this->idNumberFiscale = $idNumberFiscale;
+
+        return $this;
     }
-
-
-
 }

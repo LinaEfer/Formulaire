@@ -1,8 +1,4 @@
-/**
- * Created by vasilina on 24/03/2017.
- */
-
-var mySelect = document.getElementById('app_bundle_formulaire_autreResidence');
+var mySelect = document.getElementById('app_formulaire_otherResidence');
 var myBlock = document.getElementById('hideMe');
 console.log(mySelect);
 

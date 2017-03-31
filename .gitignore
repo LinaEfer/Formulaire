@@ -18,9 +18,4 @@ web/app_dev.php
 web/config.php
 .gitmodules
 .travis.yml
-app/config/parameters.yml
-bin/symfony_requirements
-composer.phar
-docker-compose.override.yml
-docker-compose.yml
-Dockerfile
+

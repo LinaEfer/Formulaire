@@ -8,25 +8,25 @@
                     <tbody>
                     {% for f in formulaire %}
                         <br>
-                            {% if f.sexe == true %}
+                            {% if f.gender == 'male' %}
 
-                                <tt>Nom: M. {{ f.prenom}} {{ f.nom }}</tt><br />
+                                <tt>Nom: M. {{ f.firstname}} {{ f.lastname }}</tt><br />
                             {% else %}
 
-                                <tt>Nom: Mme. {{ f.prenom}} {{ f.nom }}</tt><br />
+                                <tt>Nom: Mme. {{ f.firstname }} {{ f.lastname }}</tt><br />
                             {% endif %}
                             <tt>Email: {{ f.email }}</tt><br />
                             <tt>Date de naissance: </tt><br /> {# toString #}
-                            <tt>Pays: {{ f.pays }}</tt><br /> {# just countrie's abreviatur #}
+                            <tt>Pays: {{ f.country }}</tt><br /> {# just countrie's abreviatur #}
                             <tt>ZipCode: {{ f.zipcode }} </tt><br />
-                            {% if f.autreResidence == true %}
+                            {% if f.otherResidence == true %}
 
                                  <tt>Autre residence: Oui</tt>
                             {% else %}
 
                                 <tt>Autre residence: No</tt>
                             {% endif %} <br />
-                            <tt>Autre pays: {{ f.autrePays }}</tt><br />
+                            <tt>Autre pays: {{ f.otherCountry }}</tt><br />
                             <tt>Numéro d'identification: {{ f.IdNumberFiscale }}</tt>
 
                             <tt><a class="btn pull-right btn-primary btn-sm" href="{{ path ('pdf') }}">Print PDF</a></tt><br />
