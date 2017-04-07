@@ -127,8 +127,8 @@ class Formulaire
     }
 
     private static $genderValues = [
-        'M.' => 'male',
-        'Mme.' => 'female',
+        'M' => 'male',
+        'Mme' => 'female',
     ];
 
     public static function getGenderValues()

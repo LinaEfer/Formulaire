@@ -31,11 +31,11 @@ class FormulaireForm extends AbstractType
             'label_attr' => ['class' => 'radio-inline'],
         ])
         ->add('firstname', TextType::class, [
-            'label' => 'Nom',
+            'label' => 'Prénom',
             'attr' => ['maxlength' => 250, 'placeholder' => 'Votre prénom..'],
         ])
         ->add('lastname', TextType::class, [
-            'label' => 'Prénom',
+            'label' => 'Nom',
             'attr' => ['maxlength' => 250, 'placeholder' => 'Votre nom..'],
         ])
         ->add('datebirth', BirthdayType::class, [
