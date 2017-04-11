@@ -49,45 +49,33 @@ class FormulaireController extends Controller
         $manager = $this->getDoctrine()->getManager();
         $formulaire = $manager->getRepository(Formulaire::class)->findAll();
 
-        //dump($formulaire);
-        //return new Response('magic');
-
         return $this->render('formulaire/preview.html.twig', ['formulaire' => $formulaire]);
     }
 
-    public function createPdf($html)
-    {
-        $pdf = $this->get('white_october.tcpdf')->create('vertical', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-
-        $pdf->SetAuthor('Our Code World');
-        $pdf->SetTitle(('Our Code World Title'));
-        $pdf->SetSubject('Our Code World Subject');
-        $pdf->setFontSubsetting(true);
-        $pdf->SetFont('helvetica', '', 11, '', true);
-        $pdf->SetMargins(20, 20, 40, true);
-        $pdf->AddPage();
-
-        $filename = 'ourcodeworld_pdf_demo';
-
-        $pdf->writeHTMLCell($w = 0, $h = 0, $x = '', $y = '', $html, $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
-        $pdf->Output($filename.'.pdf', 'I'); // This will output the PDF as a response directly
-    }
-
     /**
-     *@Route("/pdf", name="pdf")
+     * @Route("/pdf", name="pdf")
      */
-    public function indexAction()
+    public function pdfAction(Request $request)
     {
-        $html = '<h1>Plain HTML</h1>';
-/*
         $manager = $this->getDoctrine()->getManager();
-        $formulaire = $manager->getRepository(Formulaire::class)->findAll();
+        $userName = $request->get('user_name');
+        $formulaire = $manager->getRepository(Formulaire::class)->findBy(['firstname' => $userName]);
 
-        $html = $this->renderView(
-            'formulaire/preview.html.twig',
-             ['formulaire' => $formulaire]
-        );*/
+        $filename = sprintf('test-%s.pdf', date('Y-m-d'));
+        $snappy = $this->get('knp_snappy.pdf');
 
-        $this->createPdf($html);
+        $html = $this->renderView('pdf/test.html.twig', [
+            'formulaire' => $formulaire,
+            'base_dir' => $this->get('kernel')->getRootDir() . '/../web' . $request->getBasePath(),
+        ]);
+
+        return new Response(
+            $snappy->getOutputFromHtml($html),
+            200,
+            array(
+                'Content-Type'          => 'application/pdf',
+                'Content-Disposition'   => sprintf('inline; filename="%s"', $filename),
+            )
+        );
     }
 }

@@ -2,6 +2,8 @@
 <html>
     <head>
         <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{% block title %}Formulaire{% endblock %}</title>
 
         {% block stylesheets %}
@@ -17,11 +19,18 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
-        {% block body %}{% endblock %}
+    <div class="container">
+        <header class="page-header"></header>
+
+           {% block body %}{% endblock %}
+
+        <footer class="row">
+            <div class="col-xs-12 col-md-offset-2 col-md-8 text-center"></div>
+        </footer>
+    </div>
         {% block javascripts %}
             <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
             <script src="{{ asset('bootstrap-toggle-master/js/bootstrap-toggle.js') }}"></script>
         {% endblock %}
-
     </body>
 </html>

@@ -89,16 +89,16 @@ class Formulaire
     /**
      * @var string
      *
-     * @ORM\Column(name="other_country")
+     * @ORM\Column(name="other_country", nullable=true)
      */
     private $otherCountry;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="id_number_fiscale")
+     * @ORM\Column(name="number_fiscale", nullable=true)
      */
-    private $idNumberFiscale;
+    private $numberFiscale;
 
     /**
      * @return int
@@ -319,17 +319,17 @@ class Formulaire
     /**
      * @return string
      */
-    public function getIdNumberFiscale()
+    public function getNumberFiscale()
     {
-        return $this->idNumberFiscale;
+        return $this->numberFiscale;
     }
 
     /**
-     * @param string $idNumberFiscale
+     * @param string $numberFiscale
      */
-    public function setIdNumberFiscale($idNumberFiscale)
+    public function setNumberFiscale($numberFiscale)
     {
-        $this->idNumberFiscale = $idNumberFiscale;
+        $this->numberFiscale = $numberFiscale;
 
         return $this;
     }
