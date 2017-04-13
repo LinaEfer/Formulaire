@@ -12,3 +12,14 @@ services:
          class: AppBundle\Extension\CountryExtension
          tags:
             - {name: twig.extension}
+
+    app.controller.form:
+          class: AppBundle\Controller\FormulaireController
+          arguments:
+              - "@doctrine"
+              - "@knp_snappy.pdf"
+              - "%kernel.root_dir%"
+              - "@form.factory"
+              - "@templating"
+              - "@router"
+

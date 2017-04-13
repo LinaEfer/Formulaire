@@ -4,39 +4,98 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Formulaire;
 use AppBundle\Form\FormulaireForm;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Knp\Snappy\GeneratorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Templating\EngineInterface;
 
-class FormulaireController extends Controller
+/**
+ * @Route(service="app.controller.form")
+ */
+class FormulaireController
 {
+    /**
+     * @var FormFactoryInterface
+     */
+    private $formFactory;
+
+    /**
+     * @var GeneratorInterface
+     */
+    private $snappy;
+
+    /**
+     * @var ManagerRegistry
+     */
+    private $registry;
+
+    private $rootDir;
+
+    /**
+     * @var EngineInterface
+     */
+    private $engine;
+
+    /**
+     * @var UrlGeneratorInterface
+     */
+    private $redirect;
+
+    /**
+     * FormulaireController constructor.
+     *
+     * @param ManagerRegistry    $registry
+     * @param GeneratorInterface $snappy
+     * @param $rootDir
+     * @param FormFactoryInterface  $formFactory
+     * @param EngineInterface       $engine
+     * @param UrlGeneratorInterface $redirect
+     */
+    public function __construct(ManagerRegistry $registry,
+                                GeneratorInterface $snappy,
+                                $rootDir,
+                                FormFactoryInterface $formFactory,
+                                EngineInterface $engine,
+                                UrlGeneratorInterface $redirect)
+    {
+        $this->registry = $registry;
+        $this->snappy = $snappy;
+        $this->rootDir = $rootDir;
+        $this->formFactory = $formFactory;
+        $this->engine = $engine;
+        $this->redirect = $redirect;
+    }
+
     /**
      * @Route("/", name="homepage")
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function submitFormulaireAction(Request $request)
     {
-        $thisFormulaire = $this->createForm(FormulaireForm::class);
-
+        $thisFormulaire = $this->formFactory->create(FormulaireForm::class);
         $thisFormulaire->handleRequest($request);
 
         if ($thisFormulaire->isSubmitted() && $thisFormulaire->isValid()) {
             $form = $thisFormulaire->getData();
 
-            $fm = $this->getDoctrine()->getManager();
+            $fm = $this->registry->getManager();
             $fm->persist($form);
             $fm->flush();
 
-            return $this->redirectToRoute('preview');
+            return new RedirectResponse($this->redirect->generate('preview'));
         }
 
-        return $this->render('formulaire/formulaire.html.twig', [
+        return new Response($this->engine->render('formulaire/formulaire.html.twig', [
             'form' => $thisFormulaire->createView(),
-        ]);
+        ]));
     }
 
     /**
@@ -46,10 +105,10 @@ class FormulaireController extends Controller
      */
     public function previewAction(Request $request)
     {
-        $manager = $this->getDoctrine()->getManager();
+        $manager = $this->registry->getManager();
         $formulaire = $manager->getRepository(Formulaire::class)->findAll();
 
-        return $this->render('formulaire/preview.html.twig', ['formulaire' => $formulaire]);
+        return new Response($this->engine->render('formulaire/preview.html.twig', ['formulaire' => $formulaire]));
     }
 
     /**
@@ -57,25 +116,24 @@ class FormulaireController extends Controller
      */
     public function pdfAction(Request $request)
     {
-        $manager = $this->getDoctrine()->getManager();
+        $manager = $this->registry->getManager();
         $userName = $request->get('user_name');
         $formulaire = $manager->getRepository(Formulaire::class)->findBy(['firstname' => $userName]);
 
         $filename = sprintf('test-%s.pdf', date('Y-m-d'));
-        $snappy = $this->get('knp_snappy.pdf');
 
-        $html = $this->renderView('pdf/test.html.twig', [
+        $html = $this->engine->render('pdf/test.html.twig', [
             'formulaire' => $formulaire,
-            'base_dir' => $this->get('kernel')->getRootDir() . '/../web' . $request->getBasePath(),
+            'base_dir' => $this->rootDir.'/../web'.$request->getBasePath(),
         ]);
 
         return new Response(
-            $snappy->getOutputFromHtml($html),
+            $this->snappy->getOutputFromHtml($html),
             200,
-            array(
-                'Content-Type'          => 'application/pdf',
-                'Content-Disposition'   => sprintf('inline; filename="%s"', $filename),
-            )
+            [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => sprintf('inline; filename="%s"', $filename),
+            ]
         );
     }
 }

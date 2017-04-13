@@ -26,19 +26,18 @@ class FormulaireForm extends AbstractType
             'choices' => Formulaire::getGenderValues(),
             'multiple' => false,
             'expanded' => true,
-            'required' => true,
-            'label' => ' ',
+            'label' => 'Civilité ',
             'label_attr' => ['class' => 'radio-inline'],
         ])
         ->add('firstname', TextType::class, [
-            'label' => 'Prénom',
+            'label' => 'Prénom ',
             'attr' => ['maxlength' => 250,
-                       'placeholder' => 'Votre prénom..'],
+                       'placeholder' => 'Prénom', ],
         ])
         ->add('lastname', TextType::class, [
-            'label' => 'Nom',
+            'label' => 'Nom ',
             'attr' => ['maxlength' => 250,
-                       'placeholder' => 'Votre nom..'],
+                       'placeholder' => 'Nom', ],
         ])
         ->add('datebirth', BirthdayType::class, [
             'label' => 'Date de naissance',
@@ -50,11 +49,11 @@ class FormulaireForm extends AbstractType
         ->add('country', CountryType::class)
         ->add('zipcode', TextType::class, [
             'attr' => ['maxlength' => 5,
-                       'placeholder' => 'XXXXX'],
+                       'placeholder' => 'XXXXX', ],
         ])
         ->add('otherResidence', ChoiceType::class, [
             'choices' => Formulaire::getOtherResidenceValues(),
-            'choices_as_values' => true,
+            //'choices_as_values' => true,
         ])
         ->add('otherCountry', CountryType::class, [
             'required' => false,
@@ -62,7 +61,7 @@ class FormulaireForm extends AbstractType
         ])
         ->add('numberFiscale', NumberType::class, [
             'attr' => ['maxlength' => 11,
-                       'placeholder' => 'XXXXXXXXXXX'],
+                       'placeholder' => 'XXXXXXXXXXX', ],
         ])
         ->add('offer', CheckboxType::class, [
             'label' => 'Accepter de recevoir nos offres.',
@@ -70,7 +69,7 @@ class FormulaireForm extends AbstractType
             'disabled' => $isProcessorDisable,
             'attr' => ['data-toggle' => 'toggle',
                        'data-on' => 'Oui',
-                       'data-off' => 'No'],
+                       'data-off' => 'No', ],
         ])
         ->add('save', SubmitType::class, [
             'label' => 'Valider',
@@ -78,15 +77,22 @@ class FormulaireForm extends AbstractType
         ->getForm();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(['empty_data' => new Formulaire(),
-            'data_class' => 'AppBundle\Entity\Formulaire',
+        $resolver->setDefaults([
+            'empty_data' => new Formulaire(),
+            'data_class' => Formulaire::class,
             'isProcessorDisable' => false,
-            'attr' => ['novalidate' => 'novalidate']
+            'attr' => ['novalidate' => 'novalidate'],
         ]);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getBlockPrefix()
     {
         return 'app_formulaire';

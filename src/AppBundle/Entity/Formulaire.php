@@ -21,7 +21,7 @@ class Formulaire
 
     /**
      * @ORM\Column(name="gender", length=6)
-     * @Assert\Choice(callback = "getGenderKeys")
+     * @Assert\Choice(callback = "getGenderKeys", strict=true)
      */
     private $gender;
 
@@ -76,8 +76,12 @@ class Formulaire
      * @var string
      *
      * @ORM\Column(name="zipcode", nullable=false)
-     * @Assert\NotBlank
-     * @Assert\Length(max = 5)
+     * @Assert\Length(min = 5, max = 5)
+     * @Assert\Regex(
+     *     pattern="/^[[:alnum:]]+$/",
+     *     match=true,
+     *     message="Cette chaine ne doit contenir que des caractères alphanumériques."
+     * )
      */
     private $zipcode;
 
@@ -118,6 +122,8 @@ class Formulaire
 
     /**
      * @param string $gender
+     *
+     * @return string
      */
     public function setGender($gender)
     {
@@ -126,6 +132,9 @@ class Formulaire
         return $this;
     }
 
+    /**
+     * @var array
+     */
     private static $genderValues = [
         'M' => 'male',
         'Mme' => 'female',

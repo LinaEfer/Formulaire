@@ -19,15 +19,14 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
-    <div class="container">
-        <header class="page-header"></header>
+        <div class="container">
+            <div class="modal-header"></div>
 
-           {% block body %}{% endblock %}
+               {% block body %}{% endblock %}
 
-        <footer class="row">
-            <div class="col-xs-12 col-md-offset-2 col-md-8 text-center"></div>
-        </footer>
-    </div>
+            <div class="modal-footer">Some texte in the footer</div>
+        </div>
+
         {% block javascripts %}
             <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
             <script src="{{ asset('bootstrap-toggle-master/js/bootstrap-toggle.js') }}"></script>
