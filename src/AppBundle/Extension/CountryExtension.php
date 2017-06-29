@@ -22,11 +22,6 @@ class CountryExtension extends \Twig_Extension
         // TODO: Implement initRuntime() method.
     }
 
-    public function getGlobals()
-    {
-        // TODO: Implement getGlobals() method.
-    }
-
     public function getName()
     {
         return 'country_extension';

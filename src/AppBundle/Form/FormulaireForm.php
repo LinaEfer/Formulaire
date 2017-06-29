@@ -53,7 +53,6 @@ class FormulaireForm extends AbstractType
         ])
         ->add('otherResidence', ChoiceType::class, [
             'choices' => Formulaire::getOtherResidenceValues(),
-            //'choices_as_values' => true,
         ])
         ->add('otherCountry', CountryType::class, [
             'required' => false,
